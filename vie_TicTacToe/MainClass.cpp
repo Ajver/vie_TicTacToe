@@ -1,6 +1,7 @@
 #include "MainClass.h"
 
 #include <vie/Graphics.h>
+#include <vie/Window.h>
 
 #include "Tile.h"
 #include "BoardMaker.h"
@@ -18,9 +19,14 @@ void MainClass::onCreate()
 {
 	Tile::loadTextures();
 
+	float tileWidth = 96.0f;
+	float boardWidth = 3 * tileWidth;
+	float screenWidth = vie::Window::getScreenWidth();
+	float offset = (screenWidth - boardWidth) / 2.0f;
+
 	BoardMaker boardMaker;
-	boardMaker.setTileSize(96, 96);
-	boardMaker.setOffset(20, 10);
+	boardMaker.setTileSize(tileWidth, tileWidth);
+	boardMaker.setOffset(offset, offset);
 	boardMaker.makeBoard();
 	boardMaker.appendTilesIntoManager(objectsManager);
 }
