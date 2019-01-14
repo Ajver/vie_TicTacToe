@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vie/Engine.h>
+#include <vie/Texture.h>
 
 class Game;
 
@@ -16,8 +17,13 @@ public:
 
 private:	
 	Game* game;
+	vie::Texture x_texture;
+	vie::Texture o_texture;
 
+	void loadTextures();
 	void createGame();
 	void createRestartButton();
+
+	void renderCursor(vie::Graphics* g);
 };
 
