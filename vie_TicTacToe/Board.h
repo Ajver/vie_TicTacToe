@@ -13,6 +13,7 @@ public:
 	~Board();
 
 	void createAndAppendIntoManager(vie::ObjectsManager* objectsManager);
+	void resetBoard();
 
 private:
 	Game* game;

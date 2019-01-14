@@ -14,7 +14,20 @@ public:
 	void startGame(vie::ObjectsManager* objectsManager);
 	void restartGame();
 
+	enum class WhoseMove
+	{
+		NOONE, X, O
+	};
+
+	WhoseMove getWhoseMove();
+
+	void nextMove();
+
 private:
 	Board* board;
+	WhoseMove currentMove;
+
+	void switchMove();
+
 };
 

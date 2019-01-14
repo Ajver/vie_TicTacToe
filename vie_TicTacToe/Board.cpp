@@ -18,6 +18,7 @@ Board::~Board()
 void Board::createAndAppendIntoManager(vie::ObjectsManager* objectsManager)
 {
 	BoardMaker boardMaker;
+	boardMaker.setGame(game);
 	boardMaker.setTileSize(96.0f, 96.0f);
 	tiles = boardMaker.getNewTilesArray();
 
@@ -31,4 +32,10 @@ void Board::appendTilesIntoManager(vie::ObjectsManager* objectManager)
 		objectManager->appendObject(tiles[i]);
 		objectManager->appendMouseInteractiveObject(tiles[i]);
 	}
+}
+
+void Board::resetBoard()
+{
+	for (int i = 0; i < 9; i++)
+		tiles[i]->reset();
 }

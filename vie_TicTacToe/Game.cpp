@@ -2,7 +2,9 @@
 
 #include "Board.h"
 
-Game::Game()
+Game::Game() :
+	board(nullptr),
+	currentMove(WhoseMove::O)
 {
 }
 
@@ -20,3 +22,25 @@ void Game::restartGame()
 {
 }
 
+Game::WhoseMove Game::getWhoseMove()
+{
+	return currentMove;
+}
+
+void Game::nextMove()
+{
+	switchMove();
+}
+
+void Game::switchMove()
+{
+	switch (currentMove)
+	{
+	case WhoseMove::X:
+		currentMove = WhoseMove::O;
+		break;
+	case WhoseMove::O:
+		currentMove = WhoseMove::X;
+		break;
+	}
+}

@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 class Tile;
+class Game;
 
 class BoardMaker
 {
@@ -12,9 +13,12 @@ public:
 
 	Tile** getNewTilesArray();
 
+	void setGame(Game* ngame);
 	void setTileSize(float tileW, float tileH);
 
 private:
+	Game* game;
+
 	float tileWidth;
 	float tileHeight;
 
@@ -29,5 +33,6 @@ private:
 	void calculateBoardOffset();
 	glm::vec2 getTilePositionByIndex(int index);
 	glm::vec2 getPositionOnBoardByIndex(int index);
+	void setTileGame(Tile* tile);
 };
 

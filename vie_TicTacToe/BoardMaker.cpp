@@ -37,6 +37,7 @@ Tile* BoardMaker::getNewTileByIndex(int index)
 	Tile* newTile = new Tile();
 	setTileSize(newTile);
 	setTilePositionByIndex(newTile, index);
+	setTileGame(newTile);
 
 	return newTile;
 }
@@ -83,6 +84,16 @@ glm::vec2 BoardMaker::getPositionOnBoardByIndex(int index)
 	positionOnBoard.y = index / 3;
 
 	return positionOnBoard;
+}
+
+void BoardMaker::setTileGame(Tile* tile)
+{
+	tile->setGame(game);
+}
+
+void BoardMaker::setGame(Game* ngame)
+{
+	game = ngame;
 }
 
 void BoardMaker::setTileSize(float tileW, float tileH)

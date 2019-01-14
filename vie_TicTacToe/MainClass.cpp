@@ -32,23 +32,3 @@ void MainClass::render(vie::Graphics* g)
 {
 	g->setBackgroundColor(vie::Color(30, 30, 30));
 }
-
-MainClass::WhoseMove MainClass::getWhoseMove()
-{
-	return currentMove;
-}
-
-void MainClass::nextMove()
-{
-
-}
-
-bool MainClass::isWin()
-{
-	return false;
-}
-
-bool MainClass::isGameEnd()
-{
-	return false;
-}
