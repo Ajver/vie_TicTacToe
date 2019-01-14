@@ -11,6 +11,7 @@ vie::Texture Tile::X_Texture;
 vie::Texture Tile::O_Texture;
 
 Tile::Tile() :
+	game(nullptr),
 	currentState(TileState::EMPTY)
 {
 }

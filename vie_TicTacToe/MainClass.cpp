@@ -2,14 +2,17 @@
 
 #include <vie/Graphics.h>
 #include <vie/Window.h>
+#include <vie/ObjectsManager.h>
 
 #include "Tile.h"
 #include "BoardMaker.h"
 #include "Game.h"
+#include "ResetButton.h"
 
-MainClass::MainClass()
+MainClass::MainClass() :
+	game(nullptr)
 {
-	runEngine("Tic Tac Toe", 400, 600);
+	runEngine("Tic Tac Toe", 400, 460);
 }
 
 MainClass::~MainClass()
@@ -19,9 +22,22 @@ MainClass::~MainClass()
 void MainClass::onCreate()
 {
 	Tile::loadTextures();
+	createGame();
+	createRestartButton();
+}
 
-	Game* game = new Game();
+void MainClass::createGame()
+{
+	game = new Game();
 	game->startGame(objectsManager);
+}
+
+void MainClass::createRestartButton()
+{
+	ResetButton* resetBtn = new ResetButton();
+	resetBtn->init(game);
+	objectsManager->appendObject(resetBtn);
+	objectsManager->appendMouseInteractiveObject(resetBtn);
 }
 
 void MainClass::update(float et)

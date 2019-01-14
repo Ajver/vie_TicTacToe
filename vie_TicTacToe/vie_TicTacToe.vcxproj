@@ -127,6 +127,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
+    <ClCompile Include="ResetButton.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +135,7 @@
     <ClInclude Include="BoardMaker.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="MainClass.h" />
+    <ClInclude Include="ResetButton.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

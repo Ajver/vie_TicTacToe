@@ -12,7 +12,7 @@ public:
 	~Game();
 
 	void startGame(vie::ObjectsManager* objectsManager);
-	void restartGame();
+	void resetGame();
 
 	enum class WhoseMove
 	{
@@ -28,6 +28,7 @@ private:
 	WhoseMove currentMove;
 
 	void switchMove();
+	void resetCurrentMove();
 
 };
 

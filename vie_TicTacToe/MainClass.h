@@ -2,6 +2,8 @@
 
 #include <vie/Engine.h>
 
+class Game;
+
 class MainClass : public vie::Engine
 {
 public:
@@ -13,7 +15,9 @@ public:
 	void onCreate() override;
 
 private:	
-	bool isWin();
-	bool isGameEnd();
+	Game* game;
+
+	void createGame();
+	void createRestartButton();
 };
 

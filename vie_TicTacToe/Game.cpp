@@ -4,7 +4,7 @@
 
 Game::Game() :
 	board(nullptr),
-	currentMove(WhoseMove::O)
+	currentMove(WhoseMove::NOONE)
 {
 }
 
@@ -16,10 +16,18 @@ void Game::startGame(vie::ObjectsManager* objectsManager)
 {
 	board = new Board(this);
 	board->createAndAppendIntoManager(objectsManager);
+	resetCurrentMove();
 }
 
-void Game::restartGame()
+void Game::resetGame()
 {
+	board->resetBoard();
+	resetCurrentMove();
+}
+
+void Game::resetCurrentMove()
+{
+	currentMove = WhoseMove::X;
 }
 
 Game::WhoseMove Game::getWhoseMove()
