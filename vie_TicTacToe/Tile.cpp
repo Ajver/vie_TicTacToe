@@ -2,6 +2,8 @@
 
 #include <vie/IOManager.h>
 
+#include <iostream>
+
 vie::Texture Tile::defaultTileTexture;
 vie::Texture Tile::hoverTileTexture;
 vie::Texture Tile::X_Texture;
@@ -30,12 +32,12 @@ void Tile::render(vie::Graphics* g)
 
 void Tile::onMousePress()
 {
-
+	std::cout << "press!" << std::endl;
 }
 
 void Tile::onMouseMove()
 {
-
+	std::cout << "move in!" << std::endl;
 }
 
 Tile::TileState Tile::getState()

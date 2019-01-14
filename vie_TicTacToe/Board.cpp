@@ -27,5 +27,8 @@ void Board::createAndAppendIntoManager(vie::ObjectsManager* objectsManager)
 void Board::appendTilesIntoManager(vie::ObjectsManager* objectManager)
 {
 	for (int i = 0; i < 9; i++)
+	{
 		objectManager->appendObject(tiles[i]);
+		objectManager->appendMouseInteractiveObject(tiles[i]);
+	}
 }
