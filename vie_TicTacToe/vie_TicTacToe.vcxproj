@@ -122,13 +122,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardMaker.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
     <ClInclude Include="BoardMaker.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="MainClass.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>

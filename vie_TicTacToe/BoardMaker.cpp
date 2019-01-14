@@ -2,13 +2,12 @@
 
 #include "Tile.h"
 
-#include <vie/ObjectsManager.h>
+#include <vie/Window.h>
 
 BoardMaker::BoardMaker() :
 	tileWidth(32),
 	tileHeight(32),
-	offsetX(0),
-	offsetY(0),
+	offset(0),
 	tiles(nullptr)
 {
 }
@@ -17,16 +16,14 @@ BoardMaker::~BoardMaker()
 {
 }
 
-void BoardMaker::appendTilesIntoManager(vie::ObjectsManager* objectManager)
+Tile** BoardMaker::getNewTilesArray()
 {
-	for (int i=0; i<9; i++)
-		objectManager->appendObject(tiles[i]);
-}
+	calculateBoardOffset();
 
-void BoardMaker::makeBoard()
-{
 	tiles = new Tile*[9];
 	createTiles();
+
+	return tiles;
 }
 
 void BoardMaker::createTiles()
@@ -63,10 +60,18 @@ glm::vec2 BoardMaker::getTilePositionByIndex(int index)
 	position.x *= tileWidth;
 	position.y *= tileHeight;
 
-	position.x += offsetX;
-	position.y += offsetY;
+	position += offset;
 
 	return position;
+}
+
+void BoardMaker::calculateBoardOffset()
+{
+	float tileWidth = 96.0f;
+	float boardWidth = 3 * tileWidth;
+	float screenWidth = vie::Window::getScreenWidth();
+	
+	offset = (screenWidth - boardWidth) / 2.0f;
 }
 
 glm::vec2 BoardMaker::getPositionOnBoardByIndex(int index)
@@ -84,10 +89,4 @@ void BoardMaker::setTileSize(float tileW, float tileH)
 {
 	tileWidth = tileW;
 	tileHeight = tileH;
-}
-
-void BoardMaker::setOffset(float offX, float offY)
-{
-	offsetX = offX;
-	offsetY = offY;
 }

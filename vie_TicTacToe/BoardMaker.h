@@ -2,11 +2,6 @@
 
 #include <glm/glm.hpp>
 
-namespace vie
-{
-	class ObjectsManager;
-}
-
 class Tile;
 
 class BoardMaker
@@ -15,18 +10,15 @@ public:
 	BoardMaker();
 	~BoardMaker();
 
-	void makeBoard();
-	void appendTilesIntoManager(vie::ObjectsManager* objectManager);
+	Tile** getNewTilesArray();
 
 	void setTileSize(float tileW, float tileH);
-	void setOffset(float offX, float offY);
 
 private:
 	float tileWidth;
 	float tileHeight;
 
-	float offsetX;
-	float offsetY;
+	float offset;
 
 	Tile** tiles;
 
@@ -34,6 +26,7 @@ private:
 	Tile* getNewTileByIndex(int index);
 	void setTileSize(Tile* tile);
 	void setTilePositionByIndex(Tile* tile, int index);
+	void calculateBoardOffset();
 	glm::vec2 getTilePositionByIndex(int index);
 	glm::vec2 getPositionOnBoardByIndex(int index);
 };
