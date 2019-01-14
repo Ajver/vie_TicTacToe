@@ -135,6 +135,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="ResetButton.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
@@ -143,6 +144,7 @@
     <ClInclude Include="BoardMaker.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="MainClass.h" />
+    <ClInclude Include="Message.h" />
     <ClInclude Include="ResetButton.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>

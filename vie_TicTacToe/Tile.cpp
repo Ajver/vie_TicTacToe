@@ -42,7 +42,7 @@ void Tile::render(vie::Graphics* g)
 
 bool Tile::shouldBeHovered()
 {
-	return isMouseHover && canBeClicked();
+	return isMouseHover && canBeClicked() && game->isGameStillRunning();
 }
 
 void Tile::renderDefault(vie::Graphics* g)
@@ -89,7 +89,7 @@ void Tile::onMousePress()
 
 bool Tile::canBeClicked()
 {
-	return currentState == TileState::EMPTY;
+	return currentState == TileState::EMPTY && game->isGameStillRunning();
 }
 
 void Tile::setStateByCurrentMove()
@@ -121,6 +121,11 @@ void Tile::reset()
 Tile::TileState Tile::getState()
 {
 	return currentState;
+}
+
+bool Tile::isNotEmpty()
+{
+	return currentState != TileState::EMPTY;
 }
 
 void Tile::loadTextures()

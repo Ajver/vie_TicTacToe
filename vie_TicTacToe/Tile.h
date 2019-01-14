@@ -24,6 +24,7 @@ public:
 	void render(vie::Graphics* g) override;
 
 	TileState getState();
+	bool isNotEmpty();
 
 	void onMousePress() override;
 

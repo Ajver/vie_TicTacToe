@@ -12,7 +12,7 @@
 MainClass::MainClass() :
 	game(nullptr)
 {
-	runEngine("Tic Tac Toe", 400, 460);
+	runEngine("Tic Tac Toe", 400, 540);
 }
 
 MainClass::~MainClass()
@@ -47,4 +47,5 @@ void MainClass::update(float et)
 void MainClass::render(vie::Graphics* g)
 {
 	g->setBackgroundColor(vie::Color(30, 30, 30));
+	game->render(g);
 }
