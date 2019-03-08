@@ -1,13 +1,17 @@
 #pragma once
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include "WindowFlags.h"
+#include "Graphics.h"
+
+
+class b2World;
 
 namespace vie
 {
-	class Graphics;
 	class ObjectsManager;
+	class Camera2D;
 
 	class Engine
 	{
@@ -15,32 +19,65 @@ namespace vie
 		Engine();
 		~Engine();
 
-		void printOpenGLVersion();
+		char* getOpenGLVersion();
+
+		// Get FPS count from previous frame (updated after each second)
+		unsigned int getFpsCount();
+
+		// Runs automaticly after run vie::Logger::fatalError();
+		virtual void onFatalError(const std::string& errorMessage);
+
+		// Runs automaticly after run vie::Logger::log();
+		virtual void onLog(const std::string& logMessage);
 
 	protected:
 		ObjectsManager* objectsManager;
+
+		// Draw all stuff with this
+		Graphics* graphics;
+		Camera2D* mainCamera;
+
+		// Physics world from Box2D lib. 
+		// It is NOT automaticly created!
+		b2World* b_world;
 
 		// Runs once after all systems init
 		virtual void onCreate();
 
 		// Runs every frame
 		// Update all object (Elapsed Time from previous frame)
-		virtual void update(float et) abstract;
+		virtual void update(float et);
 
 		// Runs every frame after update()
 		// Render all stuff (graphics object for displaying everything)
-		virtual void render(Graphics* g) abstract;
+		virtual void render(Graphics* g);
 
+		// Runs once before all systems destroy
 		virtual void onDestroy();
 
 		// Init all systems and run the vEngine (title, screen width, screen height, window type)
 		void runEngine(const char* title = "vie Engine", 
-			unsigned int sw = 640, 
+			unsigned int sw = 728, 
 			unsigned int sh = 480, 
 			WindowFlags windowFlags = WindowFlags::DEFAULT);
 
-		// Get FPS count from previous frame (updated after each second)
-		unsigned int getFpsCount();
+		void runEngine(const char* title = "vie Engine",
+			WindowFlags windowFlags = WindowFlags::DEFAULT);
+
+		// If nMaxFps < 0 then no limits!
+		// (Default 60)
+		void setFPSLimit(unsigned int nMaxFps);
+
+		// Create world with specific gravity (default - no gravity)
+		void createWorld(const glm::vec2& gravity = { 0.0f, 0.0f });
+
+		void setVelocityIterations(unsigned int it);
+		void setPositionIterations(unsigned int it);
+		void setIsWorldUpdating(bool flag);
+
+		unsigned int getVelocityIterations() const;
+		unsigned int getPositionIterations() const;
+		unsigned int getIsWorldUpdating() const;
 
 		virtual void onKeyPress();
 		virtual void onKeyRelease();
@@ -49,19 +86,23 @@ namespace vie
 		virtual void onMouseMove();
 		virtual void onMouseDrag();
 
-		void destroy();
+		// Stop main loop and destroy engine
+		void destroyEngine();
 
 	private:
+		// Is main loop running?
 		bool isRunning;
 
 		// Frames per second
 		unsigned int FPS;
 
-		// Maximum Frames per second
+		// Maximum Frames per second (default 60)
 		unsigned int maxFPS;
 
-		// Draw all stuff with this
-		Graphics* g;
+		// Variables for Box2D 
+		unsigned int b_velocityIterations;
+		unsigned int b_positionIterations;
+		bool isWorldUpdating;
 
 		// Init all systems (title, screen width, screen height, window type)
 		void initSDLAndWindowAndGraphics(const char* title,
@@ -72,11 +113,12 @@ namespace vie
 
 		void mainLoop();
 		void processInput();
-		void manageUpdates(float elapsedTimeFromPreviousFrame);
-		void manageRendering();
+		void processUpdate(float elapsedTimeFromPreviousFrame);
+		void processRender();
 		void limitFPS(unsigned int elapsedMillis);
 
-		void destroyEngine();
+		void destroy();
+
 	};
 
 }

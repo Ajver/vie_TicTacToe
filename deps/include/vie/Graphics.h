@@ -1,210 +1,121 @@
 #pragma once
 
-#include <vector>
+#include <map>
 #include <glm/glm.hpp>
 
-#include "Color.h"
-
+#include "RenderBatch.h"
+#include "GLSLProgram.h"
 #include "Texture.h"
+#include "Glyph.h"
+#include "Camera2D.h"
+#include "TextJustification.h"
+
 
 namespace vie
 {
-
-	enum class GlyphSortType
-	{
-		// No sort
-		NONE,
-
-		// Normaly 
-		FRONT_TO_BACK,
-
-		// Reverse
-		BACK_TO_FRONT,
-
-		// By texture (most efficient)
-		TEXTURE
-	};
+	class Layer;
+	class SpriteFont;
 
 	class Graphics
 	{
 	public:
 		Graphics();
 		~Graphics();
-		void init();
 
-		// Controll the rendering
-		void begin(GlyphSortType st = GlyphSortType::TEXTURE);
-		void end();
+		void init(Camera2D* mainCamera);
+		void appendLayer(Layer* layer);
+		void createLayer(const std::string& layerName, Camera2D* camera = new Camera2D());
+		void switchLayer(const std::string& layerName);
+		void removeLayer(const std::string& layerName);
+		
+		bool containsLayer(const std::string& layerName) const;
+		Layer* getCurrentLayer() const;
+		Layer* getLayerByName(const std::string& layerName) const;
 
+		void setColor(const Color& color);
 		void setBackgroundColor(const Color& color);
 
 		// Add new sprite to the batch
-		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color = WHITE);
+		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color = COLOR::WHITE);
 		
-		// Sipmly draw texture on position x, y
-		void drawTexture(const Texture& texture, float x, float y, const Color& color = WHITE);
-		void drawTexture(const Texture& texture, glm::vec2& position, const Color& color = WHITE);
+		void drawTexture(const Texture& texture, const glm::vec2& position, const Color& color = COLOR::WHITE);
+		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color = COLOR::WHITE);
+		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const glm::vec2& uv, const Color& color = COLOR::WHITE);
+		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const glm::vec4& uv, const Color& color = COLOR::WHITE);
 
-		// Drawp texture on position x, y by scaling it into w, h size
-		void drawTexture(const Texture& texture, float x, float y, float w, float h, const Color& color = WHITE);
-		void drawTexture(const Texture& texture, glm::vec2& position, glm::vec2& size, const Color& color = WHITE);
+		void fillRect(const glm::vec2& position, const glm::vec2& size);
+		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight = 2.0f);
 
-		void renderBatch();
+		void fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC);
+		void drawTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float weight = 2.0f);
+
+		void drawOval(const glm::vec2& position, const glm::vec2& size, float weight = 2.0f);
+		void fillOval(const glm::vec2& position, const glm::vec2& size);
+
+		void drawPolygon(std::vector<glm::vec2> polygon, float weight = 2.0f);
+		void fillPolygon(std::vector<glm::vec2> polygon);
+
+		void drawQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD, float weight = 2.0f);
+		void fillQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD);
+
+		void drawLine(const glm::vec2& posA, const glm::vec2& posB, float weight = 2.0f);
+
+		void drawString(const std::string& str, const glm::vec2& position, TextJustification just = TextJustification::LEFT);
+
+		void setOvalPrecision(float nprec);
+		void setFont(SpriteFont* nfont);
+		void setTranslate(const glm::vec2& newTranslate);
+		void setScale(float newScale);
+		void setRotate(float newRotate);
+
+		void translate(const glm::vec2& translateVector);
+		void scaleUp(float scaleMod);
+		void scaleDown(float scaleMod);
+		void rotate(float angle);
+
+		void render();
+
+		float getOvalPrecision() const;
+		glm::vec2 getTranslate() const;
+		float getScale() const;
+		float getRotate() const;
+		Color getDefaultColor() const;
+		SpriteFont* getFont() const;
+		GLuint getVBO() const;
+		GLuint getVAO() const;
+		float getNextTextureDepth() const;
+
+		glm::vec2 transformPoint(glm::vec2 point) const;
 
 	private:
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-
-		class Camera2D
-		{
-		public:
-			Camera2D();
-			~Camera2D();
-
-			void init();
-			void update();
-
-			void setPosition(glm::vec2 npos);
-			void setScale(float nscale);
-
-			glm::vec2 screenToWorldPos(glm::vec2 screenPosition);
-
-			glm::vec2 getPosition();
-			float getScale();
-			glm::mat4 getCameraMatrix();
-
-		private:
-			bool needsMatrixUpdate;
-
-			glm::vec2 position;
-			glm::mat4 cameraMatrix;
-			glm::mat4 orthoMatrix;
-
-			float scale;
-		};
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-
-		class GLSLProgram
-		{
-		public:
-			GLSLProgram();
-			~GLSLProgram();
-
-			void compileShaders();
-
-			void linkShaders();
-
-			void addAtribute(const std::string&);
-
-			GLuint getUnitformLocation(const std::string &);
-
-			void use();
-			void unuse();
-
-		private:
-			int numAttributes;
-
-			GLuint programID;
-
-			GLuint vertexShaderID;
-			GLuint fragmentShaderID;
-
-			void compileShader(const std::string&, GLuint);
-			std::string getVertexShader();
-			std::string getFragmentShader();
-		};
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-
-		struct Vertex
-		{
-			struct Position
-			{
-				float x, y;
-			};
-
-			//-----------------------------------------------
-
-			struct UV
-			{
-				float u;
-				float v;
-			};
-
-			//-----------------------------------------------
-
-			Position position;
-			Color color;
-			UV uv;
-
-			void setPosition(float x, float y)
-			{
-				position.x = x;
-				position.y = y;
-			}
-
-			void setColor(GLubyte r, GLubyte g, GLubyte b, GLubyte a = 255)
-			{
-				color.setColor(r, g, b, a);
-			}
-
-			void setUV(float u, float v)
-			{
-				uv.u = u;
-				uv.v = v;
-			}
-		};
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-
-		struct Glyph
-		{
-			GLuint textureID;
-			float depth;
-
-			Vertex topLeft;
-			Vertex topRight;
-			Vertex bottomLeft;
-			Vertex bottomRight;
-		};
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-
-		class RenderBatch
-		{
-		public:
-			RenderBatch(GLuint of, GLuint nv, GLuint tID) :
-				offset(of),
-				numVertices(nv),
-				textureID(tID)
-			{}
-
-			GLuint offset;
-			GLuint numVertices;
-			GLuint textureID;
-		};
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////////////////////////////
-
 		GLuint vbo;
 		GLuint vao;
 		GlyphSortType sortType;
+		SpriteFont* spriteFont;
 
-		Camera2D camera;
-		GLSLProgram colorProgram;
+		Layer* currentLayer;
+		std::vector<Layer*> layers;
 
-		std::vector<Glyph*> glyphs;
-		std::vector<RenderBatch> renderBatches;
+		Color defaultColor;
+		float nextTextureDepth;
+		float nextTextureDepthStep;
+		Texture onePixelTexture;
+		float ovalRenderingPrecision;
 
+		glm::vec2 translateVec;
+		float scale;
+		float rotateAngleInRadians;
+
+		void enableAlphaBlending();
+		void createOnePixelTexture();
 		void createVertexArray();
-		void createRenderBatches();
-		void sortGlyphs();
 
-		static bool compareFrontToBack(Glyph* a, Glyph* b);
-		static bool compareBackToFront(Glyph* a, Glyph* b);
-		static bool compareTexture(Glyph* a, Glyph* b);
+		void clearScreen();
+		void renderLayers();
+
+		void setGlyphAttributes(Glyph* glyph, GLuint id, float depth, const glm::vec4& uvRect, const Color& color);
+		void setGlyphPosition(Glyph* glyph, const glm::vec2& topLeft, const glm::vec2& topRight, const glm::vec2& bottomLeft, const glm::vec2& bottomRight);
+
 
 	};
 
