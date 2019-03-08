@@ -94,7 +94,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>vie.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;Opengl32.lib;glew32.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
